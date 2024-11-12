@@ -15,12 +15,11 @@ export async function middleware(req: NextRequest) {
     url.pathname.startsWith('/_next') ||
     url.pathname.startsWith('/public') ||
     url.pathname.startsWith('/static') ||
-    url.pathname.startsWith('/messages') ||
     /\.(png|jpg|jpeg|gif|svg|ico|webp|avif)$/.test(url.pathname)
   ) {
     return NextResponse.next(); // Allow static files to proceed normally
   }
 
-  // Default behavior: Proceed with the request as usual
+  
   return NextResponse.next(); // This ensures the request continues normally without modification
 }
