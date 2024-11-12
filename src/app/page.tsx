@@ -5,8 +5,8 @@ import { Footer, Header } from '@/sections';
 const HomePage: NextPage = () => {
   return (
     <>
-    <h1>work</h1>
-   {/*    <Header />
+      <h1 style={{ color: 'white' }}>work</h1>
+      {/*    <Header />
       <Footer /> */}
     </>
   );

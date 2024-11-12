@@ -18,11 +18,9 @@ export async function middleware(req: NextRequest) {
     url.pathname.startsWith('/messages') ||
     /\.(png|jpg|jpeg|gif|svg|ico|webp|avif)$/.test(url.pathname)
   ) {
-    return NextResponse.next();
+    return NextResponse.next(); // Allow static files to proceed normally
   }
 
-
-
-  const response = req
-  return response;
+  // Default behavior: Proceed with the request as usual
+  return NextResponse.next(); // This ensures the request continues normally without modification
 }
