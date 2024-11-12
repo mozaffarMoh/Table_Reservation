@@ -5,7 +5,7 @@ import { Footer, Header } from '@/sections';
 const HomePage: NextPage = () => {
   return (
     <>
-      <h1 style={{ color: 'white' }}>work</h1>
+      <h1 style={{ color: 'white' }}>add Sass</h1>
       {/*    <Header />
       <Footer /> */}
     </>
