@@ -1,13 +1,11 @@
 'use client';
+import Main from '@/sections/Main/Main';
 import type { NextPage } from 'next';
-import { Footer, Header } from '@/sections';
 
 const HomePage: NextPage = () => {
   return (
     <>
-      <h1 style={{ color: 'white' }}>add Sass</h1>
-      {/*    <Header />
-      <Footer /> */}
+      <Main />
     </>
   );
 };
