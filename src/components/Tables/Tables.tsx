@@ -21,13 +21,18 @@ const ChooseDate = () => {
       alignItems={'center'}
       gap={2}
     >
-      {loadingTables
+      {!loadingTables
         ? Array(3)
             .fill('')
             .map((_: any, i: number) => {
               return (
-                <Stack gap={2}>
-                  <Skeleton width={150} />
+                <Stack
+                  gap={2}
+                  key={i}
+                >
+                  <Skeleton
+                    width={150}
+                  />
                   <Stack
                     direction={'row'}
                     flexWrap={'wrap'}
@@ -35,9 +40,10 @@ const ChooseDate = () => {
                   >
                     {Array(3)
                       .fill('')
-                      .map(() => {
+                      .map((_: any, i2: number) => {
                         return (
                           <Skeleton
+                            key={i2}
                             variant="rounded"
                             width={100}
                             height={70}
@@ -50,8 +56,17 @@ const ChooseDate = () => {
             })
         : tables.map((item: any, i: number) => {
             return (
-              <Stack gap={1}>
-                <Typography variant='h6' color={thirdColor} fontWeight={600}>{item?.type}</Typography>
+              <Stack
+                gap={1}
+                key={i}
+              >
+                <Typography
+                  variant="h6"
+                  color={thirdColor}
+                  fontWeight={600}
+                >
+                  {item?.type}
+                </Typography>
                 <Stack
                   direction={'row'}
                   flexWrap={'wrap'}
@@ -59,9 +74,10 @@ const ChooseDate = () => {
                 >
                   {Array(item?.num)
                     .fill('')
-                    .map((_: any, i: number) => {
+                    .map((_: any, i2: number) => {
                       return (
                         <Stack
+                          key={i2}
                           sx={{
                             width: 100,
                             height: 100,
