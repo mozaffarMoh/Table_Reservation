@@ -21,7 +21,7 @@ const ChooseDate = () => {
       alignItems={'center'}
       gap={2}
     >
-      {!loadingTables
+      {loadingTables
         ? Array(3)
             .fill('')
             .map((_: any, i: number) => {
