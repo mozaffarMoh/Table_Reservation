@@ -27,9 +27,9 @@ export async function GET(req: NextRequest) {
 
     /* Delete the expired dates */
     let reservedItems: any = await db.collection('reserve')
-    if (reservedItems) {
-      reservedItems.deleteMany({}); // Optionally clear the collection
-      reservedItems.insertMany(reservedTables);
+    reservedItems.deleteMany({}); // Optionally clear the collection
+    if (reservedTables.length > 0) {
+      await reservedItems.insertMany(reservedTables);
     }
 
     let tables = await db.collection('types').find({}).toArray();
