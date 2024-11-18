@@ -1,5 +1,5 @@
 'use client';
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -8,15 +8,7 @@ import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 
-interface ChooseDateProps {
-  setReserveData: (data: {
-    date: string;
-    fromTime: string;
-    toTime: string;
-    currentDate: string;
-  }) => void;
-}
-const ChooseDate = ({ setReserveData }: ChooseDateProps) => {
+const ChooseDate = ({ setReserveData, getTables }: any) => {
   const [date, setDate] = useState<Dayjs | null>(dayjs());
   const [fromTime, setFromTime] = useState<Dayjs | null>(
     dayjs().hour(13).minute(0).second(0), // 01:00 PM
@@ -76,6 +68,14 @@ const ChooseDate = ({ setReserveData }: ChooseDateProps) => {
             />
           </DemoContainer>
         </Stack>
+
+        <Button
+          variant="contained"
+          color="inherit"
+          onClick={getTables}
+        >
+          تحقق
+        </Button>
       </LocalizationProvider>
     </Stack>
   );

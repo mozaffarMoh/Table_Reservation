@@ -1,4 +1,3 @@
-'use client';
 import Main from '@/sections/Main/Main';
 import type { NextPage } from 'next';
 

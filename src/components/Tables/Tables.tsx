@@ -8,15 +8,11 @@ import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import CustomAlert from '../CustomAlert/CustomAlert';
 import usePost from '@/custom-hooks/usePost';
 
-const Tables = ({ reserveData }: any) => {
+const Tables = ({ reserveData, getTables, loadingTables, tables }: any) => {
   const [showReserveConfirmation, setShowReserveConfirmation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentNum, setCurrentNum] = useState(0);
   const [currentSlug, setCurrentSlug] = useState('');
-
-  const [tables, loadingTables, getTables] = useGet(
-    `/api/tables?param=${JSON.stringify(reserveData)}`, // `/en/api/bills?param=${currentDateString}`,
-  );
 
   const [
     ,
@@ -28,12 +24,6 @@ const Tables = ({ reserveData }: any) => {
   ] = usePost('/api/tables', {
     reserveData: { ...reserveData, num: currentNum, slug: currentSlug },
   });
-
-  useEffect(() => {
-    if (reserveData?.date) {
-      getTables();
-    }
-  }, [reserveData]);
 
   const handleOpenReserveModal = (num: number, slug: string) => {
     if (reserveData?.fromTime === reserveData?.toTime) {
@@ -52,12 +42,15 @@ const Tables = ({ reserveData }: any) => {
       setCurrentSlug('');
       getTables();
     }
+  }, [successReserve]);
+
+  useEffect(() => {
     if (errorMessage) {
       setTimeout(() => {
         setErrorMessage('');
-      }, 3000);
+      }, 2000);
     }
-  }, [successReserve, errorMessage]);
+  }, [errorMessage]);
 
   return (
     <Stack gap={2}>
@@ -95,7 +88,7 @@ const Tables = ({ reserveData }: any) => {
                     flexWrap={'wrap'}
                     gap={2}
                   >
-                    {Array(3)
+                    {Array(7)
                       .fill('')
                       .map((_: any, i2: number) => {
                         return (
