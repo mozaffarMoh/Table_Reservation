@@ -10,6 +10,7 @@ import usePost from '@/custom-hooks/usePost';
 
 const Tables = ({ reserveData }: any) => {
   const [showReserveConfirmation, setShowReserveConfirmation] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [currentNum, setCurrentNum] = useState(0);
   const [currentSlug, setCurrentSlug] = useState('');
 
@@ -25,7 +26,7 @@ const Tables = ({ reserveData }: any) => {
     successReserveMessage,
     errorReserveMessage,
   ] = usePost('/api/tables', {
-    reserveData: { ...reserveData, num: currentNum,slug:currentSlug },
+    reserveData: { ...reserveData, num: currentNum, slug: currentSlug },
   });
 
   useEffect(() => {
@@ -35,9 +36,13 @@ const Tables = ({ reserveData }: any) => {
   }, [reserveData]);
 
   const handleOpenReserveModal = (num: number, slug: string) => {
-    setShowReserveConfirmation(true);
-    setCurrentNum(num);
-    setCurrentSlug(slug);
+    if (reserveData?.fromTime === reserveData?.toTime) {
+      setErrorMessage('لايمكن الحجز الاوقات متطابقة');
+    } else {
+      setShowReserveConfirmation(true);
+      setCurrentNum(num);
+      setCurrentSlug(slug);
+    }
   };
 
   useEffect(() => {
@@ -47,14 +52,19 @@ const Tables = ({ reserveData }: any) => {
       setCurrentSlug('');
       getTables();
     }
-  }, [successReserve]);
+    if (errorMessage) {
+      setTimeout(() => {
+        setErrorMessage('');
+      }, 3000);
+    }
+  }, [successReserve, errorMessage]);
 
   return (
     <Stack gap={2}>
       <CustomAlert
-        openAlert={Boolean(errorReserveMessage)}
-        setOpenAlert={() => {}}
-        message={errorReserveMessage}
+        openAlert={Boolean(errorReserveMessage) || Boolean(errorMessage)}
+        setOpenAlert={() => setErrorMessage('')}
+        message={errorReserveMessage || errorMessage}
       />
       <CustomAlert
         openAlert={Boolean(successReserveMessage)}

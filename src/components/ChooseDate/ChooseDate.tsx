@@ -7,7 +7,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { isSameOrAfter } from '@/constant/isSameOrAfter';
 
 interface ChooseDateProps {
   setReserveData: (data: {
@@ -19,8 +18,12 @@ interface ChooseDateProps {
 }
 const ChooseDate = ({ setReserveData }: ChooseDateProps) => {
   const [date, setDate] = useState<Dayjs | null>(dayjs());
-  const [fromTime, setFromTime] = useState<Dayjs | null>(dayjs());
-  const [toTime, setToTime] = useState<Dayjs | null>(dayjs());
+  const [fromTime, setFromTime] = useState<Dayjs | null>(
+    dayjs().hour(13).minute(0).second(0), // 01:00 PM
+  );
+  const [toTime, setToTime] = useState<Dayjs | null>(
+    dayjs().hour(15).minute(0).second(0), // 03:00 PM
+  );
 
   useEffect(() => {
     const currentDate = dayjs().format('DD-MM-YYYY');
@@ -30,7 +33,7 @@ const ChooseDate = ({ setReserveData }: ChooseDateProps) => {
 
     // Update reserveData with the formatted values
     setReserveData({
-      date: formattedDate,
+      date: '17-11-2024', //formattedDate,
       fromTime: formattedFromTime,
       toTime: formattedToTime,
       currentDate: currentDate,

@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { isSameOrAfter } from '@/constant/isSameOrAfter';
+import { isTimesReserved } from '@/constant/isTimesReserved';
 
 
 export async function GET(req: NextRequest) {
-
   const { searchParams }: any = new URL(req.url);
   const inputDateTime = JSON.parse(searchParams.get('param'));
   const { date, fromTime, toTime, currentDate }: any = inputDateTime;
@@ -15,8 +15,13 @@ export async function GET(req: NextRequest) {
 
     /* check the expired dates and eliminate them */
     let reservedTables: any = await db.collection('reserve').find({}).toArray();
-    reservedTables = reservedTables.filter((item: any) =>
-      isSameOrAfter(item?.date, currentDate)
+    reservedTables = reservedTables.filter((item: any) => {
+      if (item?.date && currentDate) {
+        return isSameOrAfter(item.date, currentDate)
+      } else {
+        return true
+      }
+    }
     );
 
     /* Delete the expired dates */
@@ -26,22 +31,23 @@ export async function GET(req: NextRequest) {
 
     let tables = await db.collection('types').find({}).toArray();
 
+    /* add reservation to items */
     tables = tables.map((item: any) => {
-      let isReserved = false
-      let reservedNums: any = []
-      reservedTables.forEach((item2: any) => {
-        if (item2?.slug == item?.slug
-          && item2?.date == date
-          && item2?.fromTime == fromTime
-          && item2?.toTime == toTime
+      let isReserved = false;
+      let reservedNums: any = [];
+      reservedTables.forEach((reserveItem: any) => {
+        if (reserveItem?.slug == item?.slug
+          && reserveItem?.date == date &&
+          isTimesReserved({ inputFrom: fromTime, inputTo: toTime }, { resFrom: reserveItem?.fromTime, resTo: reserveItem?.toTime })
         ) {
-          isReserved = true
-          reservedNums.push(item2?.num)
+          isReserved = true;
+          reservedNums.push(reserveItem?.num)
         }
       })
       const updatedItem = { ...item, isReserved: isReserved, reservedNums }
       return updatedItem
     })
+
     return NextResponse.json({ success: true, data: tables });
   } catch (error) {
     return NextResponse.json({ success: false, message: 'خطأ في الاتصال بقاعدة البيانات' }, { status: 500 });
