@@ -72,7 +72,6 @@ const ChooseDate = ({ setReserveData, getTables }: any) => {
         <Button
           variant="contained"
           color="inherit"
-          onClick={getTables}
         >
           تحقق
         </Button>

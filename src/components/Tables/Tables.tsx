@@ -8,11 +8,22 @@ import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import CustomAlert from '../CustomAlert/CustomAlert';
 import usePost from '@/custom-hooks/usePost';
 
-const Tables = ({ reserveData, getTables, loadingTables, tables }: any) => {
+const Tables = ({ reserveData}: any) => {
   const [showReserveConfirmation, setShowReserveConfirmation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentNum, setCurrentNum] = useState(0);
   const [currentSlug, setCurrentSlug] = useState('');
+
+  
+  const [tables, loadingTables, getTables] = useGet(
+    `/api/tables?param=${JSON.stringify(reserveData)}`,
+  );
+
+  useEffect(() => {
+    if (reserveData?.date) {
+      getTables();
+    }
+  }, [reserveData]);
 
   const [
     ,
@@ -51,6 +62,7 @@ const Tables = ({ reserveData, getTables, loadingTables, tables }: any) => {
       }, 2000);
     }
   }, [errorMessage]);
+
 
   return (
     <Stack gap={2}>
