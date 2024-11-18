@@ -6,27 +6,16 @@ import { isTimesReserved } from '@/constant/isTimesReserved';
 
 
 export async function GET(req: NextRequest) {
- // const { searchParams }: any = new URL(req.url);
- // const inputDateTime = JSON.parse(searchParams.get('param'));
-  let date = '18-11-2024';
-  let fromTime = "01:00 PM";
-  let toTime = "03:00 PM";
-  let currentDate = "18-11-2024"
-  //const { date, fromTime, toTime, currentDate }: any = inputDateTime;
+ const { searchParams }: any = new URL(req.url);
+  const inputDateTime = JSON.parse(searchParams.get('param'));
+  const { date, fromTime, toTime, currentDate }: any = inputDateTime;
   try {
     const client = await clientPromise;
     const db = client.db('tables');
 
     /* check the expired dates and eliminate them */
     let reservedTables: any = await db.collection('reserve').find({}).toArray();
-    reservedTables = reservedTables.filter((item: any) => {
-      if (item?.date && currentDate) {
-        return isSameOrAfter(item.date, currentDate)
-      } else {
-        return true
-      }
-    }
-    );
+
 
     /* Delete the expired dates */
     let reservedItems: any = await db.collection('reserve')
