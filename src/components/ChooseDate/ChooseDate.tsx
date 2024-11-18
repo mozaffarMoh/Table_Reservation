@@ -33,7 +33,7 @@ const ChooseDate = ({ setReserveData }: ChooseDateProps) => {
 
     // Update reserveData with the formatted values
     setReserveData({
-      date: '17-11-2024', //formattedDate,
+      date: formattedDate, //formattedDate,
       fromTime: formattedFromTime,
       toTime: formattedToTime,
       currentDate: currentDate,
