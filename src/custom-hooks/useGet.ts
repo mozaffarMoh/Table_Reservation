@@ -20,11 +20,11 @@ const useGet = (endPoint: string): any => {
 
     const getData = () => {
         // Cancel the previous request if it exists
-        if (cancelTokenRef.current) {
+     /*    if (cancelTokenRef.current) {
             cancelTokenRef.current.cancel("Request canceled due to a new request.");
-        }
+        } */
         // Create a new cancel token
-        cancelTokenRef.current = axios.CancelToken.source();
+        //cancelTokenRef.current = axios.CancelToken.source();
 
 
         setSuccessMessage("");
@@ -33,7 +33,7 @@ const useGet = (endPoint: string): any => {
         setLoading(true);
         axios
             .get(endPoint, {
-                headers, cancelToken: cancelTokenRef.current.token
+                headers, //cancelToken: cancelTokenRef.current.token
             })
             .then((res: any) => {
                 setSuccess(true);

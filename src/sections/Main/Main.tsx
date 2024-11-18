@@ -7,7 +7,15 @@ import { useEffect, useState } from 'react';
 
 const Main = () => {
   const [reserveData, setReserveData] = useState<any>(null);
+  const [tables, loadingTables, getTables] = useGet(
+    `/api/tables?param=${JSON.stringify(reserveData)}`, 
+  );
 
+  useEffect(() => {
+    if (reserveData?.date && tables.length == 0) {
+      getTables();
+    }
+  }, [reserveData]);
 
   return (
     <Container>
@@ -21,13 +29,17 @@ const Main = () => {
           fontWeight={600}
           color={"ActiveBorder"}
         >
-        *  احجز طاولتك الان
+          احجز طاولتك الان
         </Typography>
         <ChooseDate
+          getTables={getTables}
           setReserveData={setReserveData}
         />
         <Tables
           reserveData={reserveData}
+          getTables={getTables}
+          loadingTables={loadingTables}
+          tables={tables}
         />
       </Stack>
     </Container>
