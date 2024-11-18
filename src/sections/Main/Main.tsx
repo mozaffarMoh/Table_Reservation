@@ -29,7 +29,7 @@ const Main = () => {
           fontWeight={600}
           color={"ActiveBorder"}
         >
-          احجز طاولتك الان
+        *  احجز طاولتك الان
         </Typography>
         <ChooseDate
           getTables={getTables}
