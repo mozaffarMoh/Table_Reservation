@@ -25,31 +25,32 @@ export async function GET(req: NextRequest) {
     }
     );
 
-    /* Delete the expired dates */
-    let reservedItems: any = await db.collection('reserve')
-    reservedItems.deleteMany({}); // Optionally clear the collection
-    if (reservedTables.length > 0) {
-      await reservedItems.insertMany(reservedTables);
-    }
-
     let tables = await db.collection('types').find({}).toArray();
 
-    /* add reservation to items */
-    tables = tables.map((item: any) => {
-      let isReserved = false;
-      let reservedNums: any = [];
-      reservedTables.forEach((reserveItem: any) => {
-        if (reserveItem?.slug == item?.slug
-          && reserveItem?.date == date &&
-          isTimesReserved({ inputFrom: fromTime, inputTo: toTime }, { resFrom: reserveItem?.fromTime, resTo: reserveItem?.toTime })
-        ) {
-          isReserved = true;
-          reservedNums.push(reserveItem?.num)
-        }
+    /* Delete the expired dates */
+    let reservedItems: any = await db.collection('reserve')
+    reservedItems.deleteMany({}); // Optionally clear the collection;
+    
+    if (reservedTables.length > 0) {
+      await reservedItems.insertMany(reservedTables);
+
+      /* add reservation to items */
+      tables = tables.map((item: any) => {
+        let isReserved = false;
+        let reservedNums: any = [];
+        reservedTables.forEach((reserveItem: any) => {
+          if (reserveItem?.slug == item?.slug
+            && reserveItem?.date == date &&
+            isTimesReserved({ inputFrom: fromTime, inputTo: toTime }, { resFrom: reserveItem?.fromTime, resTo: reserveItem?.toTime })
+          ) {
+            isReserved = true;
+            reservedNums.push(reserveItem?.num)
+          }
+        })
+        const updatedItem = { ...item, isReserved: isReserved, reservedNums }
+        return updatedItem
       })
-      const updatedItem = { ...item, isReserved: isReserved, reservedNums }
-      return updatedItem
-    })
+    }
 
     return NextResponse.json({ success: true, data: tables });
   } catch (error) {
