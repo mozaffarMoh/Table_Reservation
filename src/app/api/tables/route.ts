@@ -6,7 +6,7 @@ import { isTimesReserved } from '@/constant/isTimesReserved';
 
 
 export async function GET(req: NextRequest) {
-  const { searchParams }: any = new URL(req.url);
+ // const { searchParams }: any = new URL(req.url);
  // const inputDateTime = JSON.parse(searchParams.get('param'));
   let date = '18-11-2024';
   let fromTime = "01:00 PM";
