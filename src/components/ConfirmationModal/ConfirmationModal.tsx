@@ -115,7 +115,12 @@ const ConfirmationModal = ({
     <Dialog
       className="logout-alert"
       open={open}
-      onClose={handleCancel}
+      onClose={(event, reason) => {
+        if (reason !== 'backdropClick') {
+          handleCancel(event);
+        }
+      }}
+      disableEscapeKeyDown
     >
       <DialogTitle sx={{ textAlign: 'center' }}>
         {message}
@@ -126,7 +131,7 @@ const ConfirmationModal = ({
           p={2}
           gap={2}
         >
-          <Stack gap={1}>
+          <Stack>
             {fieldsArr.map((item: any, i: number) => {
               return (
                 <Controller
