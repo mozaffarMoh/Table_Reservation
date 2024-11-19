@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
     await db.collection('reserve').deleteMany({
       date: { $lt: currentDate }, // Remove documents with a date before currentDate
     });
-
+ 
     let reservedTables: any = await db.collection('reserve').find({}).toArray();
 
     if (reservedTables.length > 0) {
