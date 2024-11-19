@@ -8,12 +8,12 @@ import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import CustomAlert from '../CustomAlert/CustomAlert';
 import usePost from '@/custom-hooks/usePost';
 
-const Tables = ({ reserveData, getTables, loadingTables, tables }: any) => {
+const Tables = ({ setReserveData,reserveData, getTables, loadingTables, tables }: any) => {
   const [showReserveConfirmation, setShowReserveConfirmation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentNum, setCurrentNum] = useState(0);
   const [currentSlug, setCurrentSlug] = useState('');
-
+    
   const [
     ,
     loadingReserve,
@@ -71,6 +71,9 @@ const Tables = ({ reserveData, getTables, loadingTables, tables }: any) => {
         handleConfirm={currentNum ? handleReserve : null}
         loading={loadingReserve}
         message={'تأكيد الحجز'}
+        setReserveData={setReserveData}
+        successReserve={successReserve}
+        currentSlug={currentSlug}
       />
 
       {loadingTables

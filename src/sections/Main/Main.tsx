@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 const Main = () => {
   const [reserveData, setReserveData] = useState<any>(null);
   const [tables, loadingTables, getTables] = useGet(
-    `/api/tables?param=${JSON.stringify(reserveData)}`, 
+    `/api/tables?param=${JSON.stringify(reserveData)}`,
   );
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const Main = () => {
           variant="h3"
           m={2}
           fontWeight={600}
-          color={"ActiveBorder"}
+          color={'ActiveBorder'}
         >
           احجز طاولتك الان
         </Typography>
@@ -36,6 +36,7 @@ const Main = () => {
           setReserveData={setReserveData}
         />
         <Tables
+          setReserveData={setReserveData}
           reserveData={reserveData}
           getTables={getTables}
           loadingTables={loadingTables}
