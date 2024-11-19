@@ -15,25 +15,17 @@ export async function GET(req: NextRequest) {
     const db = client.db('tables');
 
     /* check the expired dates and eliminate them */
-    let reservedTables: any = await db.collection('reserve').find({}).toArray();
-    reservedTables = reservedTables.filter((item: any) => {
-      if (item?.date && currentDate) {
-        return isSameOrAfter(item.date, currentDate)
-      } else {
-        return true
-      }
-    }
-    );
-
+   
     let tables = await db.collection('types').find({}).toArray();
 
     /* Delete the expired dates */
-    let reservedItems: any = await db.collection('reserve')
-    reservedItems.deleteMany({}); // Optionally clear the collection;
-    
-    if (reservedTables.length > 0) {
-      await reservedItems.insertMany(reservedTables);
+    await db.collection('reserve').deleteMany({
+      date: { $lt: currentDate }, // Remove documents with a date before currentDate
+    });
 
+    let reservedTables: any = await db.collection('reserve').find({}).toArray();
+
+    if (reservedTables.length > 0) {
       /* add reservation to items */
       tables = tables.map((item: any) => {
         let isReserved = false;
