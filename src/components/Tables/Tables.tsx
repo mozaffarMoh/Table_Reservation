@@ -1,19 +1,25 @@
 'use client';
 import { primaryColor, secondaryColor, thirdColor } from '@/constant/color';
 import useGet from '@/custom-hooks/useGet';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Button, Skeleton, Stack, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useEffect, useState } from 'react';
 import ConfirmationModal from '../ConfirmationModal/ConfirmationModal';
 import CustomAlert from '../CustomAlert/CustomAlert';
 import usePost from '@/custom-hooks/usePost';
 
-const Tables = ({ setReserveData,reserveData, getTables, loadingTables, tables }: any) => {
+const Tables = ({
+  setReserveData,
+  reserveData,
+  getTables,
+  loadingTables,
+  tables,
+}: any) => {
   const [showReserveConfirmation, setShowReserveConfirmation] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentNum, setCurrentNum] = useState(0);
   const [currentSlug, setCurrentSlug] = useState('');
-    
+
   const [
     ,
     loadingReserve,
@@ -131,22 +137,39 @@ const Tables = ({ setReserveData,reserveData, getTables, loadingTables, tables }
                     .map((_: any, i2: number) => {
                       const isReserved =
                         item?.isReserved &&
-                        item?.reservedNums?.some((res: any) => res == i2 + 1);
+                        item?.reservedNums?.some(
+                          (res: any) => res?.num == i2 + 1,
+                        );
+                      let reserveTime = item?.reservedNums?.filter(
+                        (res: any) => res?.num == i2 + 1,
+                      )?.[0];
                       return (
                         <Stack
                           key={i2}
                           sx={{
-                            width: 100,
-                            height: 100,
+                            width: 130,
+                            height: 130,
                             bgcolor: primaryColor,
                             borderRadius: 2,
                             color: 'white',
                           }}
                           alignItems={'center'}
-                          justifyContent={'center'}
+                          justifyContent={
+                            !isReserved ? 'space-evenly' : 'center'
+                          }
                           gap={1}
                         >
                           <Typography>طاولة رقم {i2 + 1}</Typography>
+                          {reserveTime && (
+                            <Typography
+                              variant="caption"
+                              color={'wheat'}
+                            >
+                              {reserveTime?.fromTime}
+                              <br />
+                              {reserveTime?.toTime}
+                            </Typography>
+                          )}
                           <LoadingButton
                             variant="contained"
                             color={isReserved ? 'error' : 'info'}
@@ -158,6 +181,7 @@ const Tables = ({ setReserveData,reserveData, getTables, loadingTables, tables }
                             }
                           >
                             {isReserved ? 'محجوز' : 'حجز'}
+                            <br />
                           </LoadingButton>
                         </Stack>
                       );

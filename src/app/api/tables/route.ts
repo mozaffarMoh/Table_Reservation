@@ -15,14 +15,14 @@ export async function GET(req: NextRequest) {
     const db = client.db('tables');
 
     /* check the expired dates and eliminate them */
-   
+
     let tables = await db.collection('types').find({}).toArray();
 
     /* Delete the expired dates */
     await db.collection('reserve').deleteMany({
       date: { $lt: currentDate }, // Remove documents with a date before currentDate
     });
- 
+
     let reservedTables: any = await db.collection('reserve').find({}).toArray();
 
     if (reservedTables.length > 0) {
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
             isTimesReserved({ inputFrom: fromTime, inputTo: toTime }, { resFrom: reserveItem?.fromTime, resTo: reserveItem?.toTime })
           ) {
             isReserved = true;
-            reservedNums.push(reserveItem?.num)
+            reservedNums.push({ num: reserveItem?.num, fromTime: reserveItem?.fromTime, toTime: reserveItem?.toTime })
           }
         })
         const updatedItem = { ...item, isReserved: isReserved, reservedNums }

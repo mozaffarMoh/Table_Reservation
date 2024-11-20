@@ -135,6 +135,7 @@ const ConfirmationModal = ({
             {fieldsArr.map((item: any, i: number) => {
               return (
                 <Controller
+                  key={i}
                   name={item.slug}
                   control={control}
                   render={({ field, fieldState }) => {
