@@ -1,3 +1,5 @@
+/* web push file exist inside /api/subscribe */
+
 import webPush from "web-push";
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;

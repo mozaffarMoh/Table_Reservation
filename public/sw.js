@@ -1,15 +1,16 @@
 self.addEventListener('push', (event) => {
-  console.log('event : ', event.data);
-  const message = event.data ? event.data.text() : 'Default push message!';
-  console.log('message : ', message);
+  let notificationData = { title: "New Notification", body: "You have a new message!" };
 
-  self.registration.showNotification('Test Notification', {
-    body: message,
-    icon: '/icon.png',
+  if (event.data) {
+    try {
+      notificationData = event.data.json();
+    } catch (error) {
+      console.error("Error parsing push message:", error);
+    }
+  }
+
+  self.registration.showNotification(notificationData.title, {
+    body: notificationData.body,
+    icon: '/favicon.svg',
   });
 });
-
-self.addEventListener('notificationclick', function (event) {
-  event.notification.close();
-  event.waitUntil(clients.openWindow('/'));
-})
