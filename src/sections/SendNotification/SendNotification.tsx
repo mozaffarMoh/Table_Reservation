@@ -21,6 +21,7 @@ function urlBase64ToUint8Array(base64String: string) {
 
 const PushNotification = () => {
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState('');
 
   useEffect(() => {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
@@ -40,6 +41,7 @@ const PushNotification = () => {
             'push-subscription',
             JSON.stringify(existingSubscription),
           );
+          setData(JSON.stringify(existingSubscription));
           return;
         }
 
@@ -53,6 +55,8 @@ const PushNotification = () => {
           'push-subscription',
           JSON.stringify(newSubscription),
         );
+
+        setData(JSON.stringify(newSubscription));
 
         // Send subscription data to the backend
         fetch('/api/subscribe', {
@@ -82,11 +86,12 @@ const PushNotification = () => {
         .post('/api/subscribe', { subscription: storedSubscriptionParse })
         .then((res) => {
           console.log('Message sent : ', res.data);
+          alert('Message sent');
         })
         .catch((err) => {
           console.log('Message not sent: ', err);
+          alert('Message not sent');
         });
-        
     } catch (error) {
       console.error('Error sending push notification:', error);
       alert('Error sending notification.');
@@ -112,6 +117,8 @@ const PushNotification = () => {
       >
         {loading ? 'Sending...' : 'Send Notification'}
       </Button>
+
+      <Stack p={5} sx={{lineBreak:'anywhere'}}>{data && <p>{data}</p>}</Stack>
     </Stack>
   );
 };
